@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>Live Leaderboard</title>
   <style>
     body {
@@ -10,19 +10,23 @@
       padding: 0;
       background: url('leaderboard-bg.png') no-repeat center center fixed;
       background-size: cover;
-      font-family: Arial, sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       color: white;
+      display: flex;
+      justify-content: flex-start;
+      align-items: flex-start;
     }
 
     .leaderboard {
-      position: absolute;
-      top: 20%;
-      left: 10%;
+      padding: 2em;
       font-size: 2em;
+      background-color: rgba(0, 0, 0, 0.5);
+      border-radius: 1em;
+      margin: 2em;
     }
 
     .entry {
-      margin-bottom: 0.5em;
+      margin-bottom: 0.3em;
     }
   </style>
 </head>
@@ -31,24 +35,26 @@
   <div class="leaderboard" id="leaderboard">Loading...</div>
 
   <script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbxh07ZAkh6iC2XDcMahu0Q3a31ajqeEcqgl7a1d7JlYYtXOXFWI0D2FrMKYqB8H3y4oCw/exec';
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbyUvJj0iD-UFxMD_JUpW0YJPABz2CLx4gidRx5zBkEcVxSnmxvu8lcLn1DWqVFB4H-d3Q/exec';
+    const proxyURL = `https://corsproxy.io/?${encodeURIComponent(scriptURL)}`;
 
     async function loadLeaderboard() {
       try {
-        const res = await fetch(scriptURL);
-        const data = await res.json();
+        const response = await fetch(proxyURL);
+        const data = await response.json();
 
         const leaderboard = document.getElementById('leaderboard');
         leaderboard.innerHTML = '';
 
-        data.forEach(row => {
+        data.forEach((row, index) => {
           const div = document.createElement('div');
           div.className = 'entry';
           div.textContent = `${row.Juara} ${row.Kelompok} – ${row.Poin}`;
           leaderboard.appendChild(div);
         });
-      } catch (error) {
-        console.error("Error loading data:", error);
+      } catch (err) {
+        console.error('Error loading leaderboard:', err);
+        document.getElementById('leaderboard').innerText = 'Failed to load leaderboard.';
       }
     }
 
