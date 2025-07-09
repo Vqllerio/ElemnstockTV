@@ -36,7 +36,7 @@
 
   <script>
     const scriptURL = 'https://script.google.com/macros/s/AKfycbyUvJj0iD-UFxMD_JUpW0YJPABz2CLx4gidRx5zBkEcVxSnmxvu8lcLn1DWqVFB4H-d3Q/exec';
-    const proxyURL = `https://corsproxy.io/?${encodeURIComponent(scriptURL)}`;
+    const proxyURL = `https://api.allorigins.win/raw?url=${encodeURIComponent(scriptURL)}`;
 
     async function loadLeaderboard() {
       try {
