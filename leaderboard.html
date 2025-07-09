@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Live Leaderboard</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: url('leaderboard-bg.png') no-repeat center center fixed;
+      background-size: cover;
+      font-family: Arial, sans-serif;
+      color: white;
+    }
+
+    .leaderboard {
+      position: absolute;
+      top: 20%;
+      left: 10%;
+      font-size: 2em;
+    }
+
+    .entry {
+      margin-bottom: 0.5em;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="leaderboard" id="leaderboard">Loading...</div>
+
+  <script>
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbxh07ZAkh6iC2XDcMahu0Q3a31ajqeEcqgl7a1d7JlYYtXOXFWI0D2FrMKYqB8H3y4oCw/exec';
+
+    async function loadLeaderboard() {
+      try {
+        const res = await fetch(scriptURL);
+        const data = await res.json();
+
+        const leaderboard = document.getElementById('leaderboard');
+        leaderboard.innerHTML = '';
+
+        data.forEach(row => {
+          const div = document.createElement('div');
+          div.className = 'entry';
+          div.textContent = `${row.Juara} ${row.Kelompok} – ${row.Poin}`;
+          leaderboard.appendChild(div);
+        });
+      } catch (error) {
+        console.error("Error loading data:", error);
+      }
+    }
+
+    loadLeaderboard();
+    setInterval(loadLeaderboard, 3000);
+  </script>
+</body>
+
+</html>
